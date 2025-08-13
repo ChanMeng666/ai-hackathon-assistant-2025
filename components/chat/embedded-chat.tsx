@@ -155,7 +155,7 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="h-full flex flex-col rounded-lg overflow-hidden">
+    <div className="h-full flex flex-col rounded-lg overflow-hidden chat-container">
       {/* Compact Actions Bar - Only show when there are messages */}
       {hasMessages && (
         <div className="flex-shrink-0 px-4 py-2 border-b border-gray-200 bg-gray-50/50">
@@ -191,24 +191,24 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
       )}
 
       {/* Messages Area */}
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 chat-messages">
         <div className="min-h-full">
           {!hasMessages && (
-            <div className="flex items-center justify-center min-h-full py-12">
-              <div className="w-full max-w-3xl px-4">
-                <div className="text-center mb-8">
-                  <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Sparkles size={40} className="text-white" />
+            <div className="flex items-center justify-center min-h-full py-8">
+              <div className="w-full max-w-2xl px-4">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <Sparkles size={32} className="text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
                     AI Hackathon Festival 2025 Assistant
                   </h3>
-                  <p className="text-gray-600 text-base leading-relaxed mb-6 max-w-2xl mx-auto">
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4 max-w-lg mx-auto">
                     I'm here to help you with everything about the AI Hackathon Festival 2025! 
                     Ask me about team formation, judging criteria, event schedule, or anything else you need to know.
                   </p>
-                  <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-8">
-                    <Sparkles size={14} className="text-blue-500" />
+                  <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mb-6">
+                    <Sparkles size={12} className="text-blue-500" />
                     <span>Powered by Google Gemini Pro</span>
                   </div>
                 </div>
@@ -228,7 +228,7 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
       </ScrollArea>
 
       {/* Input Form */}
-      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white">
+      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white chat-input-container">
         <form onSubmit={onSubmit} className="space-y-3">
           <div className="flex gap-3">
             <div className="flex-1 relative">
@@ -243,7 +243,7 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
                   }
                 }}
                 placeholder="Ask about teams, schedule, judging criteria..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 style={{ height: `${inputHeight}px` }}
                 disabled={isLoading}
                 rows={1}
@@ -261,7 +261,7 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
               type="submit"
               size="sm"
               disabled={isLoading || !input.trim()}
-              className="h-12 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
+              className="h-12 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200"
             >
               <Send size={16} />
               <span className="sr-only">Send message</span>

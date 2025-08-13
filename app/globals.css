@@ -28,6 +28,39 @@ html {
   }
 }
 
+/* Chat optimizations */
+.chat-container {
+  /* Ensure smooth scrolling in chat areas */
+  scroll-behavior: smooth;
+  scroll-padding-bottom: 2rem;
+  /* Prevent overscroll bounce */
+  overscroll-behavior: contain;
+}
+
+/* FAQ optimizations */
+.faq-container {
+  /* Independent scrolling for FAQ area */
+  overscroll-behavior: contain;
+}
+
+/* Focus management for better UX */
+.chat-messages {
+  /* Optimize chat message rendering */
+  contain: layout style paint;
+}
+
+.faq-item:target {
+  /* Smooth navigation to FAQ items */
+  scroll-margin-top: 1rem;
+}
+
+/* Input area optimizations */
+.chat-input-container {
+  /* Ensure input area stays visible and connected */
+  position: relative;
+  backdrop-filter: blur(8px);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

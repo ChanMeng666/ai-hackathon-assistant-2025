@@ -175,44 +175,46 @@ export default function HomePage() {
       {/* Main Content - Now with proper spacing for fixed header */}
       <main className="pt-20">
         <div className="container mx-auto px-4 py-6">
-          <div className="min-h-[calc(100vh-8rem)]">
-            {/* Desktop Layout */}
-            <div className="hidden lg:flex h-full min-h-[calc(100vh-10rem)] gap-6">
-              {/* Chat Area - 70% */}
-              <div className="flex-1 lg:w-[70%]">
-                <div className="h-full bg-white rounded-lg shadow-sm border border-gray-200">
-                  <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
-                </div>
-              </div>
-              
-              {/* FAQ Sidebar - 30% */}
-              <div className="lg:w-[30%]">
-                <div className="h-full bg-white rounded-lg shadow-sm border border-gray-200">
-                  <FAQList
-                    questions={enhancedQuestions}
-                    onVote={voteOnQuestion}
-                    onSendToChat={handleSendToChat}
-                    onView={incrementViews}
-                  />
-                </div>
+          {/* Desktop Layout */}
+          <div className="hidden lg:flex gap-6">
+            {/* Chat Area - 70% with Fixed Optimal Height */}
+            <div className="flex-1 lg:w-[70%]">
+              <div className="h-[75vh] max-h-[800px] min-h-[500px] bg-white rounded-lg shadow-sm border border-gray-200">
+                <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
               </div>
             </div>
+            
+            {/* FAQ Sidebar - 30% with Independent Height */}
+            <div className="lg:w-[30%]">
+              <div className="h-[80vh] max-h-[900px] min-h-[600px] bg-white rounded-lg shadow-sm border border-gray-200">
+                <FAQList
+                  questions={enhancedQuestions}
+                  onVote={voteOnQuestion}
+                  onSendToChat={handleSendToChat}
+                  onView={incrementViews}
+                />
+              </div>
+            </div>
+          </div>
 
-            {/* Mobile Layout */}
-            <div className="lg:hidden min-h-[calc(100vh-8rem)]">
-              <div className="h-full bg-white rounded-lg shadow-sm border border-gray-200">
-                {activeTab === 'chat' && (
+          {/* Mobile Layout */}
+          <div className="lg:hidden">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+              {activeTab === 'chat' && (
+                <div className="h-[70vh] max-h-[600px] min-h-[400px]">
                   <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
-                )}
-                {activeTab === 'faq' && (
+                </div>
+              )}
+              {activeTab === 'faq' && (
+                <div className="h-[75vh] max-h-[700px] min-h-[500px]">
                   <FAQList
                     questions={enhancedQuestions}
                     onVote={voteOnQuestion}
                     onSendToChat={handleSendToChat}
                     onView={incrementViews}
                   />
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
