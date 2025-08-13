@@ -40,7 +40,7 @@ export default function HomePage() {
     }
   }, [chatHandler]);
 
-  // Register chat handler
+  // Register chat handler when chat component is ready
   const handleChatHandlerReady = useCallback((handler: (q: EnhancedPresetQuestion) => void) => {
     setChatHandler(() => handler);
   }, []);
@@ -162,7 +162,7 @@ export default function HomePage() {
         <div className="hidden lg:flex h-full">
           {/* Chat Area - 70% */}
           <div className="flex-1 lg:w-[70%]">
-            <EmbeddedChat onQuestionReceived={handleChatHandlerReady} />
+            <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
           </div>
           
           {/* FAQ Sidebar - 30% */}
@@ -179,7 +179,7 @@ export default function HomePage() {
         {/* Mobile Layout */}
         <div className="lg:hidden h-full">
           {activeTab === 'chat' && (
-            <EmbeddedChat onQuestionReceived={handleChatHandlerReady} />
+            <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
           )}
           {activeTab === 'faq' && (
             <FAQList

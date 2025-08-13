@@ -10,6 +10,7 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === 'user';
+  const isSystem = message.role === 'system' || message.role === 'data';
 
   return (
     <motion.div
@@ -18,20 +19,24 @@ export function ChatMessage({ message }: ChatMessageProps) {
       transition={{ duration: 0.3 }}
       className={`flex gap-3 p-4 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
     >
-      <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-        isUser ? 'bg-blue-500' : 'bg-gray-600'
-      }`}>
-        {isUser ? (
-          <User size={16} className="text-white" />
-        ) : (
-          <Bot size={16} className="text-white" />
-        )}
-      </div>
+      {!isSystem && (
+        <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+          isUser ? 'bg-blue-500' : 'bg-gray-600'
+        }`}>
+          {isUser ? (
+            <User size={16} className="text-white" />
+          ) : (
+            <Bot size={16} className="text-white" />
+          )}
+        </div>
+      )}
       
       <div className={`flex flex-col max-w-[80%] ${isUser ? 'items-end' : 'items-start'}`}>
         <div className={`px-4 py-2 rounded-lg ${
           isUser 
             ? 'bg-blue-500 text-white' 
+            : isSystem
+            ? 'bg-yellow-50 text-yellow-800 border border-yellow-200'
             : 'bg-gray-100 text-gray-900 border'
         }`}>
           <div className="text-sm whitespace-pre-wrap">

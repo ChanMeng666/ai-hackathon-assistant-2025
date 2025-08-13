@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useChat } from 'ai/react';
 import { Button } from '@/components/ui/button';
@@ -21,16 +21,16 @@ const STORAGE_KEY = 'hackathon-chat-history';
 const MAX_STORED_MESSAGES = 50;
 
 interface EmbeddedChatProps {
-  onQuestionReceived?: (question: EnhancedPresetQuestion) => void;
+  onHandlerReady?: (handler: (question: EnhancedPresetQuestion) => void) => void;
 }
 
-export function EmbeddedChat({ onQuestionReceived }: EmbeddedChatProps) {
+export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [inputHeight, setInputHeight] = useState(40);
 
   // Load chat history from localStorage
-  const loadChatHistory = (): Message[] => {
+  const loadChatHistory = (): any[] => {
     if (typeof window === 'undefined') return [];
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -41,7 +41,7 @@ export function EmbeddedChat({ onQuestionReceived }: EmbeddedChatProps) {
   };
 
   // Save chat history to localStorage
-  const saveChatHistory = (messages: Message[]) => {
+  const saveChatHistory = (messages: any[]) => {
     if (typeof window === 'undefined') return;
     try {
       const toStore = messages.slice(-MAX_STORED_MESSAGES);
@@ -124,33 +124,33 @@ export function EmbeddedChat({ onQuestionReceived }: EmbeddedChatProps) {
   };
 
   // Handle receiving a question from FAQ
-  const handleFAQQuestion = (question: EnhancedPresetQuestion) => {
+  const handleFAQQuestion = useCallback((question: EnhancedPresetQuestion) => {
     // Add user question
-    const userMessage: Message = {
+    const userMessage = {
       id: Date.now().toString(),
-      role: 'user',
+      role: 'user' as const,
       content: question.question,
       timestamp: Date.now(),
     };
 
     // Add preset answer with enhanced formatting
-    const assistantMessage: Message = {
+    const assistantMessage = {
       id: (Date.now() + 1).toString(),
-      role: 'assistant',
+      role: 'assistant' as const,
       content: `${question.answer}\n\n💡 *This was a quick answer from our FAQ. Feel free to ask follow-up questions for more details!*`,
       timestamp: Date.now() + 1,
     };
 
     const newMessages = [...messages, userMessage, assistantMessage];
-    setMessages(newMessages);
-  };
+    setMessages(newMessages as any);
+  }, [messages, setMessages]);
 
   // Register the handler with parent component
   useEffect(() => {
-    if (onQuestionReceived) {
-      onQuestionReceived(handleFAQQuestion as any);
+    if (onHandlerReady) {
+      onHandlerReady(handleFAQQuestion);
     }
-  }, [onQuestionReceived, messages]);
+  }, [onHandlerReady, handleFAQQuestion]);
 
   const hasMessages = messages.length > 0;
 
