@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Highlight.js GitHub theme for code blocks */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css');
+
 @layer base {
   :root {
     --background: 0 0% 100%;

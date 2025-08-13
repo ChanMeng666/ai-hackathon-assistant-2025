@@ -1,6 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
 import { Message } from './types';
 import { Bot, User } from 'lucide-react';
 
@@ -39,8 +42,62 @@ export function ChatMessage({ message }: ChatMessageProps) {
             ? 'bg-yellow-50 text-yellow-800 border border-yellow-200'
             : 'bg-gray-100 text-gray-900 border'
         }`}>
-          <div className="text-sm whitespace-pre-wrap">
-            {message.content}
+          <div className="text-sm prose prose-sm max-w-none">
+            {!isUser ? (
+              <div className={isUser ? 'text-white' : isSystem ? 'text-yellow-800' : 'text-gray-900'}>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeHighlight]}
+                  components={{
+                  // Style headings
+                  h1: ({ children }) => <h1 className="text-lg font-bold mb-2">{children}</h1>,
+                  h2: ({ children }) => <h2 className="text-base font-bold mb-2">{children}</h2>,
+                  h3: ({ children }) => <h3 className="text-sm font-bold mb-1">{children}</h3>,
+                  // Style paragraphs
+                  p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                  // Style lists
+                  ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+                  ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+                  li: ({ children }) => <li className="text-sm">{children}</li>,
+                  // Style code
+                  code: ({ children, ...props }) => (
+                    'inline' in props && props.inline ? (
+                      <code className="bg-gray-200 text-gray-800 px-1 py-0.5 rounded text-xs">{children}</code>
+                    ) : (
+                      <code className="block bg-gray-800 text-gray-100 p-2 rounded text-xs overflow-x-auto">{children}</code>
+                    )
+                  ),
+                  pre: ({ children }) => <pre className="bg-gray-800 text-gray-100 p-2 rounded text-xs overflow-x-auto mb-2">{children}</pre>,
+                  // Style links
+                  a: ({ href, children }) => (
+                    <a 
+                      href={href} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={`underline hover:no-underline ${
+                        isUser ? 'text-blue-200' : isSystem ? 'text-yellow-600' : 'text-blue-600'
+                      }`}
+                    >
+                      {children}
+                    </a>
+                  ),
+                  // Style blockquotes
+                  blockquote: ({ children }) => (
+                    <blockquote className="border-l-4 border-gray-300 pl-3 italic mb-2">
+                      {children}
+                    </blockquote>
+                  ),
+                  // Style emphasis
+                  strong: ({ children }) => <strong className="font-bold">{children}</strong>,
+                  em: ({ children }) => <em className="italic">{children}</em>,
+                  }}
+                >
+                  {message.content}
+                </ReactMarkdown>
+              </div>
+            ) : (
+              <div className="whitespace-pre-wrap">{message.content}</div>
+            )}
           </div>
         </div>
         

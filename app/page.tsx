@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { EmbeddedChat } from '@/components/chat/embedded-chat';
 import { FAQList } from '@/components/faq/faq-list';
+import { Footer } from '@/components/layout/footer';
 import { useFAQVoting } from '@/hooks/use-faq-voting';
 import { EnhancedPresetQuestion } from '@/components/chatbot/types';
 import { 
@@ -193,17 +194,7 @@ export default function HomePage() {
       </main>
 
       {/* Footer */}
-      <footer className="flex-shrink-0 bg-white border-t border-gray-200 px-4 py-2">
-        <div className="flex items-center justify-between text-xs text-gray-500">
-          <div className="flex items-center gap-4">
-            <span>Hosted by AUT • AI Forum • She Sharp</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Sparkles size={12} />
-            <span>Powered by Google Gemini Pro</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
