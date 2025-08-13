@@ -7,17 +7,14 @@ import { presetQuestions } from '@/components/chatbot/preset-questions';
 const VOTES_STORAGE_KEY = 'hackathon-faq-votes';
 const STATS_STORAGE_KEY = 'hackathon-faq-stats';
 
-// Initialize default stats for all questions
+// Initialize default stats for all questions - Production ready with zero values
 const initializeDefaultStats = (questions: PresetQuestion[]): FAQStats[] => {
   return questions.map(q => ({
     questionId: q.id,
-    upVotes: Math.floor(Math.random() * 20) + 5, // Random initial votes for demo
-    downVotes: Math.floor(Math.random() * 5) + 1,
-    totalViews: Math.floor(Math.random() * 50) + 10,
-    score: 0 // Will be calculated
-  })).map(stat => ({
-    ...stat,
-    score: stat.upVotes - stat.downVotes
+    upVotes: 0, // Start with zero votes for production
+    downVotes: 0, // Start with zero votes for production  
+    totalViews: 0, // Start with zero views for production
+    score: 0 // Will be calculated (upVotes - downVotes)
   }));
 };
 
@@ -32,6 +29,17 @@ export function useFAQVoting() {
       const savedVotes = localStorage.getItem(VOTES_STORAGE_KEY);
       const savedStats = localStorage.getItem(STATS_STORAGE_KEY);
       
+      // For production: Always start fresh with zero values
+      // Clear any existing demo data
+      console.log('🧹 Clearing demo data and initializing with production values');
+      const defaultStats = initializeDefaultStats(presetQuestions);
+      setStats(defaultStats);
+      setVotes([]); // Clear any existing votes
+      localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(defaultStats));
+      localStorage.removeItem(VOTES_STORAGE_KEY); // Remove old votes
+      
+      // Uncomment below for persistent storage in production
+      /*
       if (savedVotes) {
         setVotes(JSON.parse(savedVotes));
       }
@@ -39,11 +47,12 @@ export function useFAQVoting() {
       if (savedStats) {
         setStats(JSON.parse(savedStats));
       } else {
-        // Initialize with default stats if none exist
         const defaultStats = initializeDefaultStats(presetQuestions);
         setStats(defaultStats);
         localStorage.setItem(STATS_STORAGE_KEY, JSON.stringify(defaultStats));
       }
+      */
+      
     } catch (error) {
       console.error('Error loading FAQ data:', error);
       // Initialize with defaults on error

@@ -39,9 +39,15 @@ export default function HomePage() {
 
   // Handle sending FAQ to chat
   const handleSendToChat = useCallback((question: EnhancedPresetQuestion) => {
+    console.log('📤 Main: Send to Chat for:', question.question);
+    
     if (chatHandler) {
       chatHandler(question);
+      console.log('✅ Main: FAQ sent to chat successfully');
+    } else {
+      console.warn('⚠️ Main: Chat handler not ready yet');
     }
+    
     // Switch to chat tab on mobile
     if (window.innerWidth < 1024) {
       setActiveTab('chat');
@@ -50,8 +56,9 @@ export default function HomePage() {
 
   // Register chat handler when chat component is ready
   const handleChatHandlerReady = useCallback((handler: (q: EnhancedPresetQuestion) => void) => {
+    console.log('🔧 Main: Chat handler registered');
     setChatHandler(() => handler);
-  }, []);
+  }, []); // No dependencies to prevent recreation
 
   if (isLoading) {
     return (

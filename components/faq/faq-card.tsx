@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { EnhancedPresetQuestion } from '@/components/chatbot/types';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ interface FAQCardProps {
 export function FAQCard({ question, onVote, onSendToChat, onView }: FAQCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [hasViewed, setHasViewed] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false); // Prevent multiple clicks
   
   const handleExpand = () => {
     if (!hasViewed) {
@@ -33,13 +34,30 @@ export function FAQCard({ question, onVote, onSendToChat, onView }: FAQCardProps
     setIsExpanded(!isExpanded);
   };
 
-  const handleSendToChat = () => {
+  const handleSendToChat = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isProcessing) {
+      console.log('🚫 Send to Chat already processing');
+      return;
+    }
+    
+    setIsProcessing(true);
+    console.log('🎯 FAQ Card: Send to Chat clicked for:', question.question);
+    
     if (!hasViewed) {
       onView(question.id);
       setHasViewed(true);
     }
+    
     onSendToChat(question);
-  };
+    
+    // Reset processing state after a short delay
+    setTimeout(() => {
+      setIsProcessing(false);
+    }, 1000);
+  }, [isProcessing, hasViewed, onView, onSendToChat, question]);
 
   const handleVote = (voteType: 'up' | 'down') => {
     onVote(question.id, voteType);
@@ -145,17 +163,22 @@ export function FAQCard({ question, onVote, onSendToChat, onView }: FAQCardProps
 
           {/* Send to Chat Button */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: isProcessing ? 1 : 1.05 }}
+            whileTap={{ scale: isProcessing ? 1 : 0.95 }}
           >
             <Button
               variant="outline"
               size="sm"
               onClick={handleSendToChat}
-              className="h-8 px-3 text-xs bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200 text-blue-700 hover:from-blue-100 hover:to-purple-100 hover:border-blue-300 transition-all duration-200"
+              disabled={isProcessing}
+              className={`h-8 px-3 text-xs transition-all duration-200 ${
+                isProcessing 
+                  ? 'bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed' 
+                  : 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200 text-blue-700 hover:from-blue-100 hover:to-purple-100 hover:border-blue-300'
+              }`}
             >
               <MessageCircle size={12} className="mr-1" />
-              Send to Chat
+              {isProcessing ? 'Sending...' : 'Send to Chat'}
             </Button>
           </motion.div>
         </div>
