@@ -48,10 +48,10 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-gradient-to-r from-slate-50 to-blue-50 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <footer className="mt-16 bg-gradient-to-r from-slate-50 to-blue-50 border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-4">
           
           {/* Developer Section */}
           <motion.div
@@ -169,7 +169,7 @@ export function Footer() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="pt-6 border-t border-gray-200"
+          className="pt-4 border-t border-gray-200"
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
             <div className="flex items-center space-x-2 text-sm text-gray-600">

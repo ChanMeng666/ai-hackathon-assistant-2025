@@ -155,71 +155,60 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="h-full flex flex-col bg-white">
-      {/* Header */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <Sparkles size={20} className="text-white" />
+    <div className="h-full flex flex-col rounded-lg overflow-hidden">
+      {/* Compact Actions Bar - Only show when there are messages */}
+      {hasMessages && (
+        <div className="flex-shrink-0 px-4 py-2 border-b border-gray-200 bg-gray-50/50">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Sparkles size={16} className="text-blue-500" />
+              <span>AI Assistant</span>
             </div>
-            <div>
-              <h1 className="text-lg font-semibold text-gray-900">
-                AI Hackathon Assistant
-              </h1>
-              <p className="text-sm text-gray-600">
-                Ask me anything about the AI Hackathon Festival 2025
-              </p>
+            
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => reload()}
+                disabled={isLoading}
+                className="h-7 w-7 p-0"
+                title="Regenerate last response"
+              >
+                <RefreshCw size={12} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearChatHistory}
+                className="h-7 w-7 p-0"
+                title="Clear chat history"
+              >
+                <Trash2 size={12} />
+              </Button>
             </div>
-          </div>
-          
-          <div className="flex gap-2">
-            {hasMessages && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => reload()}
-                  disabled={isLoading}
-                  className="h-8 w-8 p-0"
-                  title="Regenerate last response"
-                >
-                  <RefreshCw size={14} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearChatHistory}
-                  className="h-8 w-8 p-0"
-                  title="Clear chat history"
-                >
-                  <Trash2 size={14} />
-                </Button>
-              </>
-            )}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Messages Area */}
       <ScrollArea className="flex-1">
         <div className="min-h-full">
           {!hasMessages && (
-            <div className="flex items-center justify-center min-h-full py-8">
-              <div className="w-full max-w-2xl">
+            <div className="flex items-center justify-center min-h-full py-12">
+              <div className="w-full max-w-3xl px-4">
                 <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MessageCircle size={32} className="text-blue-600" />
+                  <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Sparkles size={40} className="text-white" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Welcome to your AI Assistant!
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                    AI Hackathon Festival 2025 Assistant
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4 max-w-md mx-auto">
-                    I'm here to help you with anything related to the AI Hackathon Festival 2025. 
-                    Get started with a popular question below or ask me anything!
+                  <p className="text-gray-600 text-base leading-relaxed mb-6 max-w-2xl mx-auto">
+                    I'm here to help you with everything about the AI Hackathon Festival 2025! 
+                    Ask me about team formation, judging criteria, event schedule, or anything else you need to know.
                   </p>
-                  <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
-                    <Sparkles size={12} />
+                  <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-8">
+                    <Sparkles size={14} className="text-blue-500" />
                     <span>Powered by Google Gemini Pro</span>
                   </div>
                 </div>

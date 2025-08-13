@@ -5,6 +5,29 @@
 /* Highlight.js GitHub theme for code blocks */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css');
 
+/* Performance optimizations */
+* {
+  /* Hardware acceleration for smooth animations */
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize touch interactions on mobile */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  button, [role="button"], a {
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

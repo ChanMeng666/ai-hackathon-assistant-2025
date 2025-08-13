@@ -6,6 +6,7 @@ import { EmbeddedChat } from '@/components/chat/embedded-chat';
 import { FAQList } from '@/components/faq/faq-list';
 import { Footer } from '@/components/layout/footer';
 import { useFAQVoting } from '@/hooks/use-faq-voting';
+import { useScrollDirection } from '@/hooks/use-scroll-direction';
 import { EnhancedPresetQuestion } from '@/components/chatbot/types';
 import { 
   MessageCircle, 
@@ -20,15 +21,21 @@ import { Button } from '@/components/ui/button';
 
 export default function HomePage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'chat' | 'faq'>('chat');
+    const [activeTab, setActiveTab] = useState<'chat' | 'faq'>('chat');
   const [chatHandler, setChatHandler] = useState<((q: EnhancedPresetQuestion) => void) | null>(null);
-  
+
   const {
     isLoading,
     enhancedQuestions,
     voteOnQuestion,
     incrementViews
   } = useFAQVoting();
+
+  // 智能导航栏控制
+  const { isHeaderVisible, isAtTop } = useScrollDirection({
+    threshold: 80,
+    debounceMs: 10
+  });
 
   // Handle sending FAQ to chat
   const handleSendToChat = useCallback((question: EnhancedPresetQuestion) => {
@@ -60,10 +67,17 @@ export default function HomePage() {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50">
-      {/* Top Navigation */}
-      <header className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-gray-50">
+      {/* Smart Navigation Header */}
+      <header className={`
+        fixed top-0 left-0 right-0 z-50
+        bg-white/95 backdrop-blur-sm border-b border-gray-200
+        transition-transform duration-300 ease-in-out
+        ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'}
+        ${isAtTop ? 'shadow-sm' : 'shadow-md'}
+      `}>
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -155,45 +169,56 @@ export default function HomePage() {
             </div>
           </motion.div>
         )}
+        </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 overflow-hidden">
-        {/* Desktop Layout */}
-        <div className="hidden lg:flex h-full">
-          {/* Chat Area - 70% */}
-          <div className="flex-1 lg:w-[70%]">
-            <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
-          </div>
-          
-          {/* FAQ Sidebar - 30% */}
-          <div className="lg:w-[30%] border-l border-gray-200 bg-white">
-            <FAQList
-              questions={enhancedQuestions}
-              onVote={voteOnQuestion}
-              onSendToChat={handleSendToChat}
-              onView={incrementViews}
-            />
-          </div>
-        </div>
+      {/* Main Content - Now with proper spacing for fixed header */}
+      <main className="pt-20">
+        <div className="container mx-auto px-4 py-6">
+          <div className="min-h-[calc(100vh-8rem)]">
+            {/* Desktop Layout */}
+            <div className="hidden lg:flex h-full min-h-[calc(100vh-10rem)] gap-6">
+              {/* Chat Area - 70% */}
+              <div className="flex-1 lg:w-[70%]">
+                <div className="h-full bg-white rounded-lg shadow-sm border border-gray-200">
+                  <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
+                </div>
+              </div>
+              
+              {/* FAQ Sidebar - 30% */}
+              <div className="lg:w-[30%]">
+                <div className="h-full bg-white rounded-lg shadow-sm border border-gray-200">
+                  <FAQList
+                    questions={enhancedQuestions}
+                    onVote={voteOnQuestion}
+                    onSendToChat={handleSendToChat}
+                    onView={incrementViews}
+                  />
+                </div>
+              </div>
+            </div>
 
-        {/* Mobile Layout */}
-        <div className="lg:hidden h-full">
-          {activeTab === 'chat' && (
-            <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
-          )}
-          {activeTab === 'faq' && (
-            <FAQList
-              questions={enhancedQuestions}
-              onVote={voteOnQuestion}
-              onSendToChat={handleSendToChat}
-              onView={incrementViews}
-            />
-          )}
+            {/* Mobile Layout */}
+            <div className="lg:hidden min-h-[calc(100vh-8rem)]">
+              <div className="h-full bg-white rounded-lg shadow-sm border border-gray-200">
+                {activeTab === 'chat' && (
+                  <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
+                )}
+                {activeTab === 'faq' && (
+                  <FAQList
+                    questions={enhancedQuestions}
+                    onVote={voteOnQuestion}
+                    onSendToChat={handleSendToChat}
+                    onView={incrementViews}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Footer - Natural flow layout, appears when user scrolls down */}
       <Footer />
     </div>
   );
