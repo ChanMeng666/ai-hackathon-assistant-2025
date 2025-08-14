@@ -17,13 +17,12 @@ import { getAllCategories, getCategoryDisplayName } from '@/components/chatbot/p
 interface FAQListProps {
   questions: EnhancedPresetQuestion[];
   onVote: (questionId: string, voteType: 'up' | 'down') => void;
-  onSendToChat: (question: EnhancedPresetQuestion) => void;
   onView: (questionId: string) => void;
 }
 
 type SortOption = 'score' | 'recent' | 'views';
 
-export function FAQList({ questions, onVote, onSendToChat, onView }: FAQListProps) {
+export function FAQList({ questions, onVote, onView }: FAQListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [sortBy, setSortBy] = useState<SortOption>('score');
@@ -186,7 +185,6 @@ export function FAQList({ questions, onVote, onSendToChat, onView }: FAQListProp
                 key={question.id}
                 question={question}
                 onVote={onVote}
-                onSendToChat={onSendToChat}
                 onView={onView}
               />
             ))}

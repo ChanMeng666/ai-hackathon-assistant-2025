@@ -28,8 +28,6 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [inputHeight, setInputHeight] = useState(40);
-  const lastClickTime = useRef(0); // Debounce clicks
-  const handlerRegistered = useRef(false); // Prevent multiple registrations
 
   // Load chat history from localStorage
   const loadChatHistory = (): any[] => {
@@ -83,11 +81,6 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
     }
   }, [messages]);
 
-  // Debug: Monitor messages changes (simplified)
-  useEffect(() => {
-    console.log('🔍 Messages changed - Length:', messages.length);
-  }, [messages]);
-
   // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
@@ -103,7 +96,6 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
   }, [input]);
 
   const clearChatHistory = () => {
-    console.log('🗑️ Clearing chat history');
     setMessages([]);
     localStorage.removeItem(STORAGE_KEY);
     inputRef.current?.focus();
@@ -131,56 +123,34 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
     }, 100);
   };
 
-  // Handle receiving a question from FAQ - Direct approach with proper format
+  // Handle receiving a question from FAQ
   const handleFAQQuestion = useCallback((question: EnhancedPresetQuestion) => {
-    const now = Date.now();
-    
-    // Debounce rapid clicks (prevent multiple clicks within 500ms)
-    if (now - lastClickTime.current < 500) {
-      console.log('🚫 FAQ click debounced - too rapid');
-      return;
-    }
-    lastClickTime.current = now;
-    
-    console.log('📨 Processing FAQ question:', question.question);
-    console.log('📊 Current messages before:', messages?.length || 0);
-    
-    // Create messages with format that matches useChat expectations
+    // Add user question
     const userMessage = {
-      id: `user-${now}`,
+      id: Date.now().toString(),
       role: 'user' as const,
       content: question.question,
-      createdAt: new Date(),
+      timestamp: Date.now(),
     };
 
+    // Add preset answer with enhanced formatting
     const assistantMessage = {
-      id: `assistant-${now}`,
+      id: (Date.now() + 1).toString(),
       role: 'assistant' as const,
       content: `${question.answer}\n\n💡 *This was a quick answer from our FAQ. Feel free to ask follow-up questions for more details!*`,
-      createdAt: new Date(now + 1),
+      timestamp: Date.now() + 1,
     };
 
-    console.log('🔄 Created clean messages:', { userMessage, assistantMessage });
+    const newMessages = [...messages, userMessage, assistantMessage];
+    setMessages(newMessages as any);
+  }, [messages, setMessages]);
 
-    // Use setMessages to add both messages at once
-    setMessages((currentMessages) => {
-      console.log('📥 Current messages in setter:', currentMessages.length);
-      const newMessages = [...currentMessages, userMessage, assistantMessage];
-      console.log('📤 New messages array:', newMessages.length);
-      console.log('✅ Returning new messages array');
-      return newMessages;
-    });
-  }, [setMessages]);
-
-  // Register the handler with parent component - Only once!
+  // Register the handler with parent component
   useEffect(() => {
-    if (onHandlerReady && !handlerRegistered.current) {
-      console.log('🔧 EmbeddedChat: Registering FAQ handler (ONCE)');
+    if (onHandlerReady) {
       onHandlerReady(handleFAQQuestion);
-      handlerRegistered.current = true;
-      console.log('✅ EmbeddedChat: FAQ handler registered successfully');
     }
-  }, [onHandlerReady]); // Only depend on onHandlerReady
+  }, [onHandlerReady, handleFAQQuestion]);
 
   const hasMessages = messages.length > 0;
 

@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { EmbeddedChat } from '@/components/chat/embedded-chat';
 import { FAQList } from '@/components/faq/faq-list';
-import { Footer } from '@/components/layout/footer';
+import { FloatingInfoButton } from '@/components/layout/floating-info-button';
 import { useFAQVoting } from '@/hooks/use-faq-voting';
 import { useScrollDirection } from '@/hooks/use-scroll-direction';
 import { EnhancedPresetQuestion } from '@/components/chatbot/types';
@@ -37,28 +37,10 @@ export default function HomePage() {
     debounceMs: 10
   });
 
-  // Handle sending FAQ to chat
-  const handleSendToChat = useCallback((question: EnhancedPresetQuestion) => {
-    console.log('📤 Main: Send to Chat for:', question.question);
-    
-    if (chatHandler) {
-      chatHandler(question);
-      console.log('✅ Main: FAQ sent to chat successfully');
-    } else {
-      console.warn('⚠️ Main: Chat handler not ready yet');
-    }
-    
-    // Switch to chat tab on mobile
-    if (window.innerWidth < 1024) {
-      setActiveTab('chat');
-    }
-  }, [chatHandler]);
-
   // Register chat handler when chat component is ready
   const handleChatHandlerReady = useCallback((handler: (q: EnhancedPresetQuestion) => void) => {
-    console.log('🔧 Main: Chat handler registered');
     setChatHandler(() => handler);
-  }, []); // No dependencies to prevent recreation
+  }, []);
 
   if (isLoading) {
     return (
@@ -74,7 +56,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen bg-gray-50">
       {/* Smart Navigation Header */}
       <header className={`
         fixed top-0 left-0 right-0 z-50
@@ -107,26 +89,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-2">
-            <Button
-              variant={activeTab === 'chat' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setActiveTab('chat')}
-              className="text-sm"
-            >
-              <MessageCircle size={16} className="mr-2" />
-              AI Chat
-            </Button>
-            <Button
-              variant={activeTab === 'faq' ? 'default' : 'ghost'}
-              size="sm"
-              onClick={() => setActiveTab('faq')}
-              className="text-sm"
-            >
-              <HelpCircle size={16} className="mr-2" />
-              FAQ ({enhancedQuestions.length})
-            </Button>
+          {/* Desktop Navigation - Hidden on large screens as both panels are visible */}
+          <div className="hidden items-center gap-2">
+            {/* Navigation buttons removed for desktop since both panels are always visible */}
           </div>
 
           {/* Mobile Menu Button */}
@@ -179,45 +144,43 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Main Content - Now with proper spacing for fixed header */}
-      <main className="pt-20">
-        <div className="container mx-auto px-4 py-6">
-          {/* Desktop Layout */}
-          <div className="hidden lg:flex gap-6">
-            {/* Chat Area - 70% with Fixed Optimal Height */}
+      {/* Main Content - Full height layout without margins */}
+      <main className="h-full pt-16">
+        <div className="h-full">
+          {/* Desktop Layout - No gaps, tight to edges */}
+          <div className="hidden lg:flex h-full">
+            {/* Chat Area - 70% with Full Height */}
             <div className="flex-1 lg:w-[70%]">
-              <div className="h-[75vh] max-h-[800px] min-h-[500px] bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="h-full bg-white border-r border-gray-200">
                 <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
               </div>
             </div>
             
-            {/* FAQ Sidebar - 30% with Independent Height */}
+            {/* FAQ Sidebar - 30% with Full Height */}
             <div className="lg:w-[30%]">
-              <div className="h-[80vh] max-h-[900px] min-h-[600px] bg-white rounded-lg shadow-sm border border-gray-200">
+              <div className="h-full bg-white">
                 <FAQList
                   questions={enhancedQuestions}
                   onVote={voteOnQuestion}
-                  onSendToChat={handleSendToChat}
                   onView={incrementViews}
                 />
               </div>
             </div>
           </div>
 
-          {/* Mobile Layout */}
-          <div className="lg:hidden">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          {/* Mobile Layout - Full screen */}
+          <div className="lg:hidden h-full">
+            <div className="h-full bg-white">
               {activeTab === 'chat' && (
-                <div className="h-[70vh] max-h-[600px] min-h-[400px]">
+                <div className="h-full">
                   <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
                 </div>
               )}
               {activeTab === 'faq' && (
-                <div className="h-[75vh] max-h-[700px] min-h-[500px]">
+                <div className="h-full">
                   <FAQList
                     questions={enhancedQuestions}
                     onVote={voteOnQuestion}
-                    onSendToChat={handleSendToChat}
                     onView={incrementViews}
                   />
                 </div>
@@ -227,8 +190,8 @@ export default function HomePage() {
         </div>
       </main>
 
-      {/* Footer - Natural flow layout, appears when user scrolls down */}
-      <Footer />
+      {/* Floating Info Button */}
+      <FloatingInfoButton />
     </div>
   );
 }
