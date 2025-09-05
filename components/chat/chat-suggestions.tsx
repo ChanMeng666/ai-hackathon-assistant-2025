@@ -38,7 +38,7 @@ const suggestions = [
 
 export function ChatSuggestions({ onSuggestionClick }: ChatSuggestionsProps) {
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-4xl mx-auto">
       <div className="text-center mb-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
           What would you like to know?
@@ -48,7 +48,7 @@ export function ChatSuggestions({ onSuggestionClick }: ChatSuggestionsProps) {
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {suggestions.map((suggestion, index) => {
           const Icon = suggestion.icon;
           return (
@@ -58,25 +58,37 @@ export function ChatSuggestions({ onSuggestionClick }: ChatSuggestionsProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Button
-                variant="outline"
+              <div
                 onClick={() => onSuggestionClick(suggestion.text)}
-                className="w-full h-auto p-4 text-left hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 group"
+                className="w-full h-[120px] p-4 border border-gray-200 rounded-lg bg-white hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 cursor-pointer group flex flex-col"
               >
-                <div className="flex items-start gap-3">
+                {/* Header with icon and category */}
+                <div className="flex items-center gap-3 mb-3">
                   <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
                     <Icon size={16} className="text-blue-600" />
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-blue-600 font-medium mb-1">
-                      {suggestion.category}
-                    </div>
-                    <div className="text-sm text-gray-900 leading-relaxed">
-                      {suggestion.text}
-                    </div>
+                  <div className="text-xs text-blue-600 font-semibold uppercase tracking-wide">
+                    {suggestion.category}
                   </div>
                 </div>
-              </Button>
+                
+                {/* Question text - constrained container */}
+                <div className="flex-1 overflow-hidden">
+                  <p 
+                    className="text-sm text-gray-900 leading-relaxed overflow-hidden"
+                    style={{
+                      display: '-webkit-box',
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: 'vertical',
+                      wordWrap: 'break-word',
+                      overflowWrap: 'break-word',
+                      hyphens: 'auto'
+                    }}
+                  >
+                    {suggestion.text}
+                  </p>
+                </div>
+              </div>
             </motion.div>
           );
         })}

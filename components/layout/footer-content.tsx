@@ -7,8 +7,6 @@ import {
   Code2, 
   Globe, 
   Heart,
-  GraduationCap,
-  Users,
   Sparkles
 } from 'lucide-react';
 
@@ -19,7 +17,8 @@ export function FooterContent() {
     developer: {
       name: 'Chan Meng',
       github: 'https://github.com/ChanMeng666',
-      description: '👩‍💻 AI Agent & Full-Stack Developer | 🤖 Agentic Systems & LLM Integration Expert'
+      description: '👩‍💻 AI Agent & Full-Stack Developer | 🤖 Agentic Systems & LLM Integration Expert',
+      logo: '/images/chan_logo.svg'
     },
     project: {
       repository: 'https://github.com/ChanMeng666/ai-hackathon-assistant-2025',
@@ -30,25 +29,48 @@ export function FooterContent() {
         name: 'AUT',
         url: 'https://www.aut.ac.nz/',
         description: 'Auckland University of Technology',
-        icon: GraduationCap
+        logo: '/images/Logo_of_Auckland_University_of_Technology.svg'
       },
       {
         name: 'AI Forum',
         url: 'https://aiforum.org.nz/',
         description: 'AI Forum New Zealand',
-        icon: Sparkles
+        logo: '/images/AIFNZ_logo_horiz_gradient_rgb.svg'
       },
       {
         name: 'She Sharp',
         url: 'https://www.shesharp.org.nz/',
         description: 'Women in Technology Community',
-        icon: Users
+        logo: '/images/she-sharp-logo-purple-dark-130x130.svg'
       }
     ]
   };
 
   return (
     <div className="p-6 space-y-6">
+      {/* Hackathon Event Logo */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="text-center mb-8"
+      >
+        <div className="bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 p-4 rounded-lg shadow-lg">
+          <img 
+            src="/images/AI-Hackathon-Master-Branding-06-2048x1003.svg"
+            alt="AI Hackathon Festival 2025"
+            className="mx-auto max-h-16 w-auto object-contain"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+            }}
+          />
+        </div>
+        <p className="text-sm text-gray-600 mt-3 font-medium">
+          AI Hackathon Festival 2025 - Interactive Assistant
+        </p>
+      </motion.div>
+
       {/* Developer Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -62,13 +84,19 @@ export function FooterContent() {
         </div>
         
         <div className="space-y-3">
-          <div className="flex items-center space-x-3">
-            <img 
-              src="https://github.com/ChanMeng666.png" 
-              alt="Chan Meng"
-              className="w-12 h-12 rounded-full border-2 border-blue-200"
-            />
-            <div>
+          <div className="flex items-center space-x-4">
+            <div className="flex-shrink-0">
+              <img 
+                src={links.developer.logo} 
+                alt="Chan Meng Logo"
+                className="w-20 h-20 object-contain drop-shadow-sm"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+            </div>
+            <div className="flex-grow">
               <a
                 href={links.developer.github}
                 target="_blank"
@@ -133,26 +161,37 @@ export function FooterContent() {
           <h3 className="text-lg font-semibold text-gray-900">Event Organizers</h3>
         </div>
         
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-4">
           {links.organizers.map((organizer, index) => {
-            const IconComponent = organizer.icon;
             return (
               <motion.a
                 key={organizer.name}
                 href={organizer.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors group"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
+                className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors group border border-gray-100"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
               >
-                <IconComponent className="w-4 h-4" />
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium group-hover:underline">{organizer.name}</span>
+                <div className="flex-shrink-0">
+                  <img 
+                    src={organizer.logo}
+                    alt={`${organizer.name} Logo`}
+                    className="w-12 h-12 object-contain drop-shadow-sm"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+                <div className="flex-grow">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">{organizer.name}</span>
+                    <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity text-gray-400" />
+                  </div>
                   <span className="text-xs text-gray-500">{organizer.description}</span>
                 </div>
-                <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </motion.a>
             );
           })}
@@ -164,16 +203,17 @@ export function FooterContent() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        className="pt-4 border-t border-gray-200"
+        className="pt-6 border-t border-gray-200"
       >
-        <div className="text-center space-y-2">
-          <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
-            <Sparkles className="w-4 h-4 text-purple-500" />
-            <span>AI Hackathon Festival 2025 - Interactive Assistant</span>
-          </div>
-          
-          <div className="text-sm text-gray-500">
-            <span>© {currentYear} Chan Meng • Built with ❤️ for the AI community</span>
+        <div className="text-center">
+          <div className="text-sm text-gray-500 flex items-center justify-center space-x-2">
+            <span>© {currentYear} Chan Meng</span>
+            <span>•</span>
+            <span className="flex items-center space-x-1">
+              <span>Built with</span>
+              <Heart className="w-3 h-3 text-red-500 fill-current" />
+              <span>for the AI community</span>
+            </span>
           </div>
         </div>
       </motion.div>

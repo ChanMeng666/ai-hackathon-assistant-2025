@@ -47,11 +47,11 @@ export function InfoModal({ isOpen, onClose }: InfoModalProps) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="bg-white rounded-lg max-w-md w-full mx-4 max-h-[80vh] overflow-auto shadow-2xl"
+            className="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[85vh] overflow-auto shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-lg">
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 rounded-t-lg z-10 backdrop-blur-sm bg-white/95">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold text-gray-900">
                   Project Information
