@@ -238,7 +238,7 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
       </ScrollArea>
 
       {/* Input Form */}
-      <div className="flex-shrink-0 p-4 border-t border-gray-200 bg-white chat-input-container">
+      <div className="flex-shrink-0 p-4 pb-6 border-t border-gray-200 bg-white chat-input-container">
         <form onSubmit={onSubmit} className="space-y-3">
           <div className="flex gap-3">
             <div className="flex-1 relative">
@@ -271,7 +271,7 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
               type="submit"
               size="sm"
               disabled={isLoading || !input.trim()}
-              className="h-12 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200"
+              className="h-12 px-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex-shrink-0"
             >
               <Send size={16} />
               <span className="sr-only">Send message</span>
@@ -281,7 +281,7 @@ export function EmbeddedChat({ onHandlerReady }: EmbeddedChatProps) {
           {/* Help text */}
           <div className="flex items-center justify-between text-xs text-gray-500">
             <span>Press Shift + Enter for new line</span>
-            <span>
+            <span className="hidden sm:inline">
               {isLoading ? 'AI is thinking...' : 'Ready to help!'}
             </span>
           </div>

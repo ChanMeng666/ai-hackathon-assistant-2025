@@ -177,7 +177,7 @@ export default function HomePage() {
 
           {/* Mobile Layout - Full screen */}
           <div className="lg:hidden h-full">
-            <div className="h-full bg-white">
+            <div className="h-full bg-white relative">
               {activeTab === 'chat' && (
                 <div className="h-full">
                   <EmbeddedChat onHandlerReady={handleChatHandlerReady} />
