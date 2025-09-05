@@ -32,13 +32,13 @@ One-click **FREE** deployment on Vercel.
 > Experience the full-screen AI chat interface and community-driven FAQ system in action.
 
 <div align="center">
-  <img src="https://via.placeholder.com/800x500/4F46E5/FFFFFF?text=AI+Chat+Interface+%28Desktop%29" alt="Desktop Interface" width="800"/>
+  <img src="public/screenshots/屏幕截图 2025-09-06 001458.png" alt="Desktop Interface" width="800"/>
   <p><em>Main Interface - AI Chat (70%) + FAQ Sidebar (30%)</em></p>
 </div>
 
 <div align="center">
-  <img src="https://via.placeholder.com/400x600/059669/FFFFFF?text=Mobile+Chat+View" alt="Mobile Chat" width="300"/>
-  <img src="https://via.placeholder.com/400x600/DC2626/FFFFFF?text=Mobile+FAQ+View" alt="Mobile FAQ" width="300"/>
+  <img src="public/screenshots/屏幕截图 2025-09-06 001525.png" alt="Mobile Chat" width="300"/>
+  <img src="public/screenshots/屏幕截图 2025-09-06 001712.png" alt="Mobile FAQ" width="300"/>
   <p><em>Mobile Views - Responsive Tabbed Interface</em></p>
 </div>
 
@@ -63,14 +63,17 @@ One-click **FREE** deployment on Vercel.
 
 #### TOC
 
-- [🤖 AI Hackathon Festival 2025 Assistant](#-ai-hackathon-festival-2025-assistant)
+- [🤖 AI Hackathon Festival 2025 AssistantInteractive AI Assistant with Community-Driven FAQ](#-ai-hackathon-festival-2025-assistantinteractive-ai-assistant-with-community-driven-faq)
   - [📸 Project Screenshots](#-project-screenshots)
+      - [TOC](#toc)
+      - [](#)
   - [✨ Key Features](#-key-features)
     - [`1` Full-Screen AI Chat Experience](#1-full-screen-ai-chat-experience)
     - [`2` Community-Driven FAQ System](#2-community-driven-faq-system)
     - [`*` Additional Features](#-additional-features)
   - [🛠️ Tech Stack](#️-tech-stack)
   - [🏗️ Architecture](#️-architecture)
+    - [Component Architecture](#component-architecture)
   - [🚀 Getting Started](#-getting-started)
     - [Prerequisites](#prerequisites)
     - [Quick Installation](#quick-installation)
@@ -83,8 +86,17 @@ One-click **FREE** deployment on Vercel.
     - [Main Interface](#main-interface)
     - [AI Chat Features](#ai-chat-features)
     - [FAQ Voting System](#faq-voting-system)
+    - [For Students and Mentors](#for-students-and-mentors)
+    - [Interaction Flow](#interaction-flow)
   - [🔌 Customization](#-customization)
+    - [Adding New Preset Questions](#adding-new-preset-questions)
+    - [Modifying AI Behavior](#modifying-ai-behavior)
+    - [Styling and Theming](#styling-and-theming)
+    - [Adding New Categories](#adding-new-categories)
   - [🤝 Contributing](#-contributing)
+    - [Development Process](#development-process)
+    - [Contribution Areas](#contribution-areas)
+    - [Code of Conduct](#code-of-conduct)
   - [📄 License](#-license)
   - [👥 Team](#-team)
 
@@ -117,7 +129,7 @@ Key capabilities include:
 Revolutionary FAQ management that evolves with your community. Users vote on helpful questions, automatically surfacing the most valuable content to the top.
 
 <div align="center">
-  <img src="https://via.placeholder.com/600x400/F59E0B/FFFFFF?text=FAQ+Voting+System" alt="FAQ Voting Demo" width="600"/>
+  <img src="public/screenshots/屏幕截图 2025-09-06 001657.png" alt="FAQ Voting Demo" width="600"/>
   <p><em>Community Voting in Action - Questions ranked by helpfulness</em></p>
 </div>
 
@@ -392,7 +404,7 @@ vercel --prod
 - **Gesture Support**: Native mobile interactions
 
 <div align="center">
-  <img src="https://via.placeholder.com/700x400/6366F1/FFFFFF?text=Desktop+Layout+%2870%2F30+Split%29" alt="Desktop Layout" width="700"/>
+  <img src="public/screenshots/屏幕截图 2025-09-06 001748.png" alt="Desktop Layout" width="700"/>
   <p><em>Desktop: AI Chat dominates with FAQ sidebar for quick access</em></p>
 </div>
 
