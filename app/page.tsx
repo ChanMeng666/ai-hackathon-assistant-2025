@@ -47,7 +47,17 @@ export default function HomePage() {
       <div className="h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="text-center">
           <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <Sparkles size={32} className="text-white" />
+            <img 
+              src="/images/AI-Hackathon-Master-Branding-06-2048x1003.svg" 
+              alt="AI Hackathon Festival 2025" 
+              className="w-10 h-10 object-contain filter brightness-0 invert"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement!;
+                parent.innerHTML = '<svg width="32" height="32" fill="currentColor" class="text-white"><path d="M9.5 2A1.5 1.5 0 0 0 8 3.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1A1.5 1.5 0 0 0 4.5 2A1.5 1.5 0 0 0 3 3.5v1A1.5 1.5 0 0 0 4.5 6h1A1.5 1.5 0 0 0 7 4.5v-1A1.5 1.5 0 0 1 8.5 2h1zm5 0A1.5 1.5 0 0 0 13 3.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1A1.5 1.5 0 0 0 9.5 2A1.5 1.5 0 0 0 8 3.5v1A1.5 1.5 0 0 0 9.5 6h1A1.5 1.5 0 0 0 12 4.5v-1A1.5 1.5 0 0 1 13.5 2h1z"></path><path d="M20 7.5A1.5 1.5 0 0 1 18.5 9h-13A1.5 1.5 0 0 1 4 7.5A1.5 1.5 0 0 1 5.5 6h13A1.5 1.5 0 0 1 20 7.5z"></path><path d="M5 10v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8H5z"></path></svg>';
+              }}
+            />
           </div>
           <p className="text-gray-600">Loading AI Assistant...</p>
         </div>
@@ -69,9 +79,6 @@ export default function HomePage() {
           <div className="flex items-center justify-between">
           {/* Logo and Title */}
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Sparkles size={16} className="text-white" />
-            </div>
             <div>
               <h1 className="text-lg font-semibold text-gray-900">
                 AI Hackathon Festival 2025

@@ -24,12 +24,26 @@ export function ChatMessage({ message }: ChatMessageProps) {
     >
       {!isSystem && (
         <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-          isUser ? 'bg-blue-500' : 'bg-gray-600'
+          isUser ? 'bg-blue-500' : 'bg-gradient-to-r from-blue-500 to-purple-600'
         }`}>
           {isUser ? (
             <User size={16} className="text-white" />
           ) : (
-            <Bot size={16} className="text-white" />
+            <img 
+              src="/images/AI-Hackathon-Master-Branding-06-2048x1003.svg" 
+              alt="AI Assistant" 
+              className="w-5 h-5 object-contain filter brightness-0 invert"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                // Show Bot icon as fallback
+                const parent = target.parentElement!;
+                parent.innerHTML = '';
+                const botIcon = document.createElement('div');
+                botIcon.innerHTML = '<svg width="16" height="16" fill="currentColor" class="text-white"><path d="M12 2h-2a2 2 0 0 0-2 2v2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2V4a2 2 0 0 0-2-2z"></path></svg>';
+                parent.appendChild(botIcon);
+              }}
+            />
           )}
         </div>
       )}
